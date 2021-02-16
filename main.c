@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#define maxchar 50
 //this function will execute a given file on a new thread.
 void execute_file(char * filepath){
  int pid = 0;
@@ -26,11 +27,12 @@ int main(void) {
     int pid = 0;
   // printf("PATH : %s\n", getenv("PATH"));
 
-    char com[50]; 
+    char com[maxchar]; 
     printf("[Enter command]>");
     fflush(stdout);
-    scanf("%s",com); 
-
+    fgets(com,maxchar, stdin);  
+    printf("%s",com);
+/*
     while(strcmp(com,"exit")){
    // printf("command = %s",com);
      if(file_exists(com)) 
@@ -42,7 +44,7 @@ int main(void) {
      scanf("%s",com); 
     }
 
-
+*/
   
     return 0;
 }
