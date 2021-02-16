@@ -7,7 +7,7 @@ void execute_file(char * filepath){
  char *args[]={filepath,NULL};
     pid = fork();
     if(pid==0){
-        execv(com,args); 
+        execv(args[0],args); 
         fflush(stdout);
     }
  
@@ -17,7 +17,7 @@ void execute_file(char * filepath){
 int main(void) {
     int pid = 0;
   // printf("PATH : %s\n", getenv("PATH"));
-  char *args[]={"./lol",NULL}; 
+
     char com[50]; 
     printf("[Enter command]>");
     fflush(stdout);
