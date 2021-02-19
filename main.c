@@ -54,7 +54,6 @@ void search(char *command[],char *paths[],int i){
 
 int get_paths(char *paths[]){
     int i =0;
-   // char *paths[50]={};
     char *path = getenv("PATH");
     char delim[] = ":";
 	char *ptr = strtok(path, delim);
@@ -84,6 +83,8 @@ int main(void) {
     fill_array(com,list);
 
     int h = get_paths(paths);
+
+    
     while(strcmp(com,"exit")){
      if(file_exists(list[0]))
      execute_file(list[0],list);
