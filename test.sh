@@ -1,3 +1,3 @@
 rm a.out
-gcc main.c
+gcc tester.c
 ./a.out
