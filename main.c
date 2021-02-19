@@ -4,16 +4,17 @@
 #include <sys/stat.h>
 #define maxchar 50
 //this function will execute a given file(program) on a new thread.
-void execute_file(char *args[]){
+void execute_file(char *path,char *args[]){
  int pid = 0;
     pid = fork();
     if(pid==0){
-        execv(args[0],args); 
+        execv(path,args); 
         fflush(stdout);
     }
       //sleep is called too allow the output from the new thread too be printed before the user is promted again.
      sleep(1);
 }
+
 //returns 1 if file exists in current directory and 0 if it does not
 int file_exists(char *path){
 struct stat stats;
@@ -84,9 +85,12 @@ int main(void) {
 
     while(strcmp(com,"exit")){
      if(file_exists(list[0]))
-     execute_file(list);
+     execute_file(list[0],list);
      else{
-     printf("file not found!");}
+     printf("file not found! checking path...");
+     
+     
+     }
      printf("\n[Enter command]>");
      fflush(stdout);
      fgets(com,maxchar, stdin); 
