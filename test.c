@@ -5,11 +5,12 @@
 
 int main()
 {
-	char src[] = "Look Here";
+	char *src[] = {"ok","ok"};
 	char dest[DEST_SIZE] = "Unimaginable";
+     strcpy(dest,src[0]);
 
-	strcat(dest, src);
-	printf(dest);
+
+	printf("%s",dest);
 
 	return 0;
 }

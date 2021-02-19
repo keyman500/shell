@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+/*
 int search(char *command[]){
     char path[200] = "/";
     int k = 0;
@@ -46,7 +47,22 @@ int get_paths(char **paths){
   return i;
 
 }
+*/
+int fill_array(char command[],char*arr[]){
+	int i =0;
+    char delim[] = " ";
+	char *ptr = strtok(command, delim);
+	while(ptr != NULL)
+	{
+        arr[i] = ptr;
+		ptr = strtok(NULL, delim);
+        i++;
+	}
+    arr[i] = NULL;
+    return i;
+}
 
+/*
 void execute_file(char *path,char *args[]){
  int pid = 0;
     pid = fork();
@@ -58,13 +74,20 @@ void execute_file(char *path,char *args[]){
      sleep(1);
 }
 
-
+*/
 int main( void )
 
 {
- char *s[200] ={"ls","fam"};
-int x = search(s);
-
+//testing search
+ //char *s[200] ={"ls","fam"};
+//int x = search(s);
+//testing fill fill_array
+char * arr[111];
+char s[1000]= "ls fam";
+int x = fill_array(s,arr);
+for(int i=0;i<x;i++){
+printf("\n%s",arr[i]);
+}
   return 0;
 
 }

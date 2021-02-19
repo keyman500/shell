@@ -3,6 +3,19 @@
 #include <string.h>
 #include <sys/stat.h>
 #define maxchar 50
+int fill_array(char command[],char*arr[]){
+	int i =0;
+    char delim[] = " ";
+	char *ptr = strtok(command, delim);
+	while(ptr != NULL)
+	{
+        arr[i] = ptr;
+		ptr = strtok(NULL, delim);
+        i++;
+	}
+    arr[i] = NULL;
+    return i;
+}
 //this function will execute a given file(program) on a new thread.
 void execute_file(char *path,char *args[]){
  int pid = 0;
@@ -23,25 +36,23 @@ if (stat(path, &stats) == 0){
 }
 return 0;
 }
-int search(char *command){
-    char *path = "/";
-    strcat(path, command);
-    char **paths;
-    int i =0;
-    i= get_paths(&paths);
-    
-    for(int k=0;k<i;k++){
-        	strcat(path[k],path);
-        if(file_exists(paths[k])){
-        printf("found bin at: %s",paths[k]);
-        }
-      
-   }
-   return 0;
 
+void search(char *command[],char *paths[],int i){
+    char path[200] = "/";
+    char temp[200]="/bin";
+    int k = 0;
+    strcat(path, command[0]);
+    for(k=0;k<i;k++){
+              strcpy(temp,paths[k]);
+              strcat(temp,path);
+        if(file_exists(temp)){
+       execute_file(temp,command);
+         break;
+        }
+   }
 }
 
-int get_paths(char **paths){
+int get_paths(char *paths[]){
     int i =0;
    // char *paths[50]={};
     char *path = getenv("PATH");
@@ -60,8 +71,7 @@ int get_paths(char **paths){
 
 int main(void) {
     int pid = 0;
-  // printf("PATH : %s\n", getenv("PATH"));
-
+    char *paths[50];
     char com[maxchar]; 
     char *list[10]={};
     int i = 0;
@@ -70,26 +80,15 @@ int main(void) {
     fgets(com,maxchar, stdin);  
     com[strcspn(com, "\n")] = 0;
     
-    //filling array
-	char delim[] = " ";
-	char *ptr = strtok(com, delim);
-	while(ptr != NULL)
-	{
-        list[i] = ptr;
-		ptr = strtok(NULL, delim);
-        i++;
-	}
-    list[i] = NULL;
-    //end filling array
+    //filling array with seperated words.
+    fill_array(com,list);
 
-
+    int h = get_paths(paths);
     while(strcmp(com,"exit")){
      if(file_exists(list[0]))
      execute_file(list[0],list);
      else{
-     printf("file not found! checking path...");
-     
-     
+     search(list,paths,h);
      }
      printf("\n[Enter command]>");
      fflush(stdout);
@@ -99,15 +98,7 @@ int main(void) {
     
         
     //filling array
-	ptr = strtok(com, delim);
-    i=0;
-	while(ptr != NULL)
-	{
-        list[i] = ptr;
-		ptr = strtok(NULL, delim);
-        i++;
-	}
-    list[i] = NULL;
+    fill_array(com,list);
     //end filling array
     }
     return 0;
