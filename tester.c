@@ -2,7 +2,31 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-int search(char **paths){
+int search(char command[]){
+    char path[200] = "/";
+    strcat(path, command);
+    char *paths[600];
+    int i =0;
+    i= get_paths(&paths);
+    
+    for(int k=0;k<i;k++){
+      	strcat(paths[k],path);
+        if(file_exists(paths[k])){
+        printf("\nfound bin at: %s",paths[k]);
+        }
+      
+   }
+   return 0;
+
+}
+int file_exists(char *path){
+struct stat stats;
+if (stat(path, &stats) == 0){
+    return 1;
+}
+return 0;
+}
+int get_paths(char **paths){
     int i =0;
    // char *paths[50]={};
     char *path = getenv("PATH");
@@ -18,24 +42,12 @@ int search(char **paths){
   return i;
 
 }
-int file_exists(char *path){
-struct stat stats;
-if (stat(path, &stats) == 0){
-    return 1;
-}
-return 0;
-}
-
 
 int main( void )
 
 {
-    int i =0;
-    char *paths[50]= {};
-    i= search(&paths);
-    for(int k=0;k<i;k++){
-       printf("\n%s",paths[k]);
-   }
+    char * s= "ls";
+int x = search(s);
 
   return 0;
 
