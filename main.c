@@ -85,11 +85,27 @@ int main(void) {
     while(strcmp(com,"exit")){
      if(file_exists(list[0]))
      execute_file(list);
-     else
-     printf("file not found!");
+     else{
+     printf("file not found!");}
      printf("\n[Enter command]>");
      fflush(stdout);
-     scanf("%s",com); 
+     fgets(com,maxchar, stdin); 
+
+     com[strcspn(com, "\n")] = 0;
+    
+        
+    //filling array
+	ptr = strtok(com, delim);
+    i=0;
+	while(ptr != NULL)
+	{
+        list[i] = ptr;
+		ptr = strtok(NULL, delim);
+        i++;
+	}
+    list[i] = NULL;
+    //end filling array
     }
     return 0;
+
 }
