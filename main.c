@@ -2,7 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <fcntl.h>
+#define true 1
+#define false 0
 #define maxchar 50
+
 int fill_array(char command[],char*arr[]){
 	int i =0;
     char delim[] = " ";
@@ -16,8 +20,28 @@ int fill_array(char command[],char*arr[]){
     arr[i] = NULL;
     return i;
 }
+
+int check_redirect(char *args[]){
+    int i =0;
+    while(args[i]!=NULL){
+        if(!strcmp(args[i],">")){
+          return i;
+        }
+        i++;
+    }
+return -1;
+}
 //this function will execute a given file(program) on a new thread.
 void execute_file(char *path,char *args[]){
+  int fd;
+ int r = check_redirect(args);
+ if(r> -1){
+  fd = creat(args[r+1], 0644);
+  dup2(fd, 1);
+  close(fd);
+  args[r]=NULL;
+ }
+
  int pid = 0;
     pid = fork();
     if(pid==0){
@@ -39,7 +63,7 @@ return 0;
 
 void search(char *command[],char *paths[],int i){
     char path[200] = "/";
-    char temp[200]="/bin";
+    char temp[200]="";
     int k = 0;
     strcat(path, command[0]);
     for(k=0;k<i;k++){
@@ -83,8 +107,6 @@ int main(void) {
     fill_array(com,list);
 
     int h = get_paths(paths);
-
-    
     while(strcmp(com,"exit")){
      if(file_exists(list[0]))
      execute_file(list[0],list);
