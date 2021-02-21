@@ -9,5 +9,3 @@ run.sh
 test.c
 tester.c
 test.sh
-
-[Enter command]>

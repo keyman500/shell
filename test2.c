@@ -16,36 +16,17 @@ int check_redirect(char *args[]){
 return -1;
 }
 
+char *test(){
+    char s[200] = "lol";
+    return s;
+}
+
 int main(void)
 
 {
-    char *args1[20]={"/bin/ls",NULL};
-    char *args2[20]= {"/bin/grep","main",NULL};
-    int pid1,pid2;
-    int fd[2];
-    pipe(fd);
-    pid1 = fork();
-    if(pid1==0){
-    dup2(fd[1],1);
-    close(fd[0]);
-    close(fd[1]);
-    execv(args1[0],args1); 
-  // execlp("ls","ls",NULL);
-    }
-   pid2 = fork();
-    if(pid2==0){
-        dup2(fd[0],0);
-        close(fd[0]);
-        close(fd[1]);
-        execv(args2[0],args2);
-     //execlp("grep","grep","main",NULL);
-    }
-
-    close(fd[0]);
-    close(fd[1]);
-    waitpid(pid1,NULL,0);
-    waitpid(pid2,NULL,0);
-
+    char *s = test();
+    printf("%s",s);
+  
 
   return 0;
 

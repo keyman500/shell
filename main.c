@@ -21,10 +21,10 @@ int fill_array(char command[],char*arr[]){
     return i;
 }
 
-int check_redirect(char *args[]){
+int check_char(char *args[],char *s){
     int i =0;
     while(args[i]!=NULL){
-        if(!strcmp(args[i],">")){
+        if(!strcmp(args[i],s)){
           return i;
         }
         i++;
@@ -32,22 +32,60 @@ int check_redirect(char *args[]){
 return -1;
 }
 //this function will execute a given file(program) on a new thread.
-void execute_file(char *path,char *args[]){
-  int fd;
- int r = check_redirect(args);
- if(r> -1){
-  fd = creat(args[r+1], 0644);
-  dup2(fd, 1);
-  close(fd);
-  args[r]=NULL;
- }
+
+void execute_file(char *path,char *args[],char *paths[],int i){
+  int fd1;
+ int r = check_char(args,">");
+ int p = check_char(args,"|");
+int fd[2];
+pipe(fd);
+
+
 
  int pid = 0;
     pid = fork();
+    
     if(pid==0){
+//handling pipe
+if(p>-1){
+dup2(fd[1],1);
+close(fd[0]);
+close(fd[1]);
+args[p] = NULL;
+}
+//end handling pipe
+
+//handling redirect 
+  if(r> -1&&p==-1){
+  fd1 = creat(args[r+1], 0644);
+  dup2(fd1, 1);
+  close(fd1);
+  args[r]=NULL;
+ }
+ //end handling redirect 
+ 
         execv(path,args); 
         fflush(stdout);
     }
+
+    //child 2
+    if(p>-1){
+        char *path2 = search2(args[p+1],paths,i);
+        int pid2 =fork();
+        if(pid2==0){
+        dup2(fd[0],0);
+        close(fd[0]);
+        close(fd[1]);
+        execv(path,args); 
+        fflush(stdout);
+        }
+    }
+    //end child 2
+
+
+
+close(fd[0]);
+close(fd[1]);
       //sleep is called too allow the output from the new thread too be printed before the user is promted again.
      sleep(1);
 }
@@ -72,6 +110,19 @@ void search(char *command[],char *paths[],int i){
         if(file_exists(temp)){
        execute_file(temp,command);
          break;
+        }
+   }
+}
+char * search2(char *command[],char *paths[],int i){
+    char path[200] = "/";
+    char temp[200]="";
+    int k = 0;
+    strcat(path, command[0]);
+    for(k=0;k<i;k++){
+              strcpy(temp,paths[k]);
+              strcat(temp,path);
+        if(file_exists(temp)){
+         return temp;
         }
    }
 }
