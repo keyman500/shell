@@ -1,3 +1,3 @@
 rm a.out
-gcc main.c
+gcc myshell.c
 ./a.out

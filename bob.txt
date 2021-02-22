@@ -6,6 +6,7 @@ main.c
 minitest.sh
 run.c
 run.sh
+test2.c
 test.c
 tester.c
 test.sh
