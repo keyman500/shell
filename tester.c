@@ -82,12 +82,7 @@ int main( void )
  //char *s[200] ={"ls","fam"};
 //int x = search(s);
 //testing fill fill_array
-char * arr[111];
-char s[1000]= "ls fam";
-int x = fill_array(s,arr);
-for(int i=0;i<x;i++){
-printf("\n%s",arr[i]);
+if(1){
+    printf("sir on crap");
 }
-  return 0;
-
 }

@@ -1,7 +1,4 @@
-/* 
-Marc Hypolite
-ID : 816016509
-*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

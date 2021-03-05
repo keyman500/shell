@@ -1,0 +1,13 @@
+a.out
+bob.txt
+fam
+lol
+lol2.txt
+minitest.sh
+myshell.c
+run.c
+run.sh
+test2.c
+test.c
+tester.c
+test.sh
